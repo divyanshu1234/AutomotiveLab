@@ -26,7 +26,15 @@ rpm = input_dataframe['rpm']
 load = input_dataframe['load']
 h = input_dataframe['h']
 v_fuel = input_dataframe['v_fuel']
+v_water_engine = input_dataframe['v_water_engine']
+v_water_cal = input_dataframe['v_water_cal']
 ip = input_dataframe['ip'] * 1000  # Input is in kW while we need W
+t1 = input_dataframe['t1']
+t2 = input_dataframe['t2']
+t3 = input_dataframe['t3']
+t4 = input_dataframe['t4']
+t5 = input_dataframe['t5']
+t6 = input_dataframe['t6']
 
 
 output_torque = ech.calc_output_torque(load, dynamo_arm_length)
@@ -43,21 +51,30 @@ bsfc = ech.calc_bsfc(fuel_flow, bp)
 isfc = ech.calc_isfc(fuel_flow, ip)
 vole = ech.calc_vole(air_flow, dia_cyl, stroke_length, rpm)
 
+bp_per_heat_input = bte
+el_per_heat_input = ech.calc_el_per_heat_input(v_water_cal, fuel_flow, cv_fuel, t3, t4, t5, t6)
+hl_per_heat_input = ech.calc_hl_per_heat_input(v_water_engine, fuel_flow, cv_fuel, t2, t1)
+sum_bp_losses = bp_per_heat_input + el_per_heat_input + hl_per_heat_input
+
 
 output_dict = {
     'Output Torque (Nm)': output_torque,
-    'Brake Power (W)': bp,
-    'Friction Power (W)': fp,
-    'BMEP (Pa)': bmep,
-    'IMEP (Pa)': imep,
-    'Brake Thermal Efficiency': bte,
-    'Indicated Thermal Efficiency': ite,
-    'Mechanical Efficiency': me,
+    'Brake Power (kW)': bp / 1000,                  # W -> kW
+    'Friction Power (kW)': fp / 1000,               # W -> kW
+    'BMEP (bar)': bmep / 100000,                    # Pa -> bar
+    'IMEP (bar)': imep / 100000,                    # Pa -> bar
+    'Brake Thermal Efficiency (%)': bte * 100,      # fraction -> %
+    'Indicated Thermal Efficiency (%)': ite * 100,  # fraction -> %
+    'Mechanical Efficiency (%)': me * 100,          # fraction -> %
     'Fuel Flow (kg/hr)': fuel_flow,
     'Air Flow (kg/hr)': air_flow,
     'BSFC (kg/kW-hr)': bsfc,
     'ISFC (kg/kW-hr)': isfc,
-    'Volumetric Efficiency': vole
+    'Volumetric Efficiency (%)': vole * 100,                               # fraction -> %
+    'Brake Power as percent of Heat Input (%)': bp_per_heat_input * 100,   # fraction -> %
+    'Exhaust Loss as percent of Heat Input (%)': el_per_heat_input * 100,  # fraction -> %
+    'Heat Loss as percent of Heat Input (%)': hl_per_heat_input * 100,     # fraction -> %
+    'Sum of Brake Power and Losses (%)': sum_bp_losses * 100               # fraction -> %
 }
 
 output_dataframe = pd.DataFrame(output_dict)
