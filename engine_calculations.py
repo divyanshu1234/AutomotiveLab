@@ -1,9 +1,10 @@
-import numpy as np
+from tkinter.filedialog import askopenfilename
 import pandas as pd
 import engine_calculations_helper as ech
 
 
-input_dataframe = pd.read_csv("DataSheets/kirloskar.csv")  # TODO - file picker
+input_filename = askopenfilename()
+input_dataframe = pd.read_csv(input_filename)
 
 cylinders = input_dataframe['cylinders'][0]
 strokes = input_dataframe['strokes'][0]
@@ -60,4 +61,9 @@ output_dict = {
 }
 
 output_dataframe = pd.DataFrame(output_dict)
-output_dataframe.to_csv("DataSheets/Outputs/output_kirloskar.csv")
+
+output_filename = input_filename[0: input_filename.rfind('/')] \
+                  + '/Outputs/output_' \
+                  + input_filename[input_filename.rfind('/') + 1:]
+
+output_dataframe.to_csv(output_filename)
