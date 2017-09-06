@@ -1,4 +1,5 @@
 import math
+import numpy as np
 
 
 def calc_output_torque(load, dynamo_arm_length):  # Load = kg, arm_length = mm
@@ -41,9 +42,9 @@ def calc_fuel_flow(v_fuel, den_fuel):  # v_fuel = L/min, d_fuel = kJ/kg
 
 def calc_air_flow(h, dia_orifice):  # h = mm, dia_orifice = mm TODO - fix this
     a = 1 - 9.81 * h / (1.013 * math.pow(10, 5))
-    b = math.pow(a, 2.0 / 7.0)
+    b = np.power(a, 2.0 / 7.0)
     c = 2 * 1000 * 302 * (1 - b)
-    v = math.pow(c, 0.5)
+    v = np.power(c, 0.5)
     return 0.6 * v * 1.17 * math.pi * math.pow(dia_orifice, 2) / 4 * 60 * 60 * math.pow(10, -6)  # kg/hr
 
 

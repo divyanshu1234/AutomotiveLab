@@ -1,23 +1,32 @@
 import numpy as np
-import pandasql as pd
+import pandas as pd
 import engine_calculations_helper as ech
 
 
-cylinders = float(input("Number of cylinders = "))
-strokes = float(input("Number of strokes = "))
-comp_ratio = float(input("Compression ratio = "))
-cv_fuel = float(input("Calorific Value of fuel (kJ/kg) = "))
-den_fuel = float(input("Density of fuel (kg/m3) = "))
-dia_orifice = float(input("Diameter of air intake orifice (mm) = "))
-dia_cyl = float(input("Diameter of cylinder (mm) = "))
-stroke_length = float(input("Stroke length (mm) = "))
-dynamo_arm_length = float(input("Dynamometer arm length (mm) = "))
+input_dataframe = pd.read_csv("DataSheets/kirloskar.csv")  # TODO - file picker
 
-rpm = 1553
-load = 3
-h = 90
-v_fuel = 11.6
-ip = 2500
+cylinders = input_dataframe['cylinders'][0]
+strokes = input_dataframe['strokes'][0]
+fuel = input_dataframe['fuel'][0]
+dia_orifice = input_dataframe['dia_orifice'][0]
+dia_cyl = input_dataframe['dia_cyl'][0]
+stroke_length = input_dataframe['stroke_length'][0]
+dynamo_arm_length = input_dataframe['dynamo_arm_length'][0]
+
+if fuel == 'diesel':
+    cv_fuel = 42000
+    den_fuel = 830
+
+else:
+    cv_fuel = 44000
+    den_fuel = 740
+
+rpm = input_dataframe['rpm']
+load = input_dataframe['load']
+h = input_dataframe['h']
+v_fuel = input_dataframe['v_fuel']
+ip = input_dataframe['ip'] * 1000  # Input is in kW while we need W
+
 
 output_torque = ech.calc_output_torque(load, dynamo_arm_length)
 bp = ech.calc_brake_power(output_torque, rpm)
@@ -34,16 +43,21 @@ isfc = ech.calc_isfc(fuel_flow, ip)
 vole = ech.calc_vole(air_flow, dia_cyl, stroke_length, rpm)
 
 
-print("Output Torque = " + str(output_torque) + " Nm")
-print("Brake Power = " + str(bp) + " W")
-print("Friction Power = " + str(fp) + " W")
-print("BMEP = " + str(bmep) + " Pa")
-print("IMEP = " + str(imep) + " Pa")
-print("Brake Thermal Efficiency = " + str(bte))
-print("Indicated Thermal Efficiency = " + str(ite))
-print("Mechanical Efficiency = " + str(me))
-print("Fuel Flow = " + str(fuel_flow) + " kg/hr")
-print("Air Flow = " + str(air_flow) + " kg/hr")
-print("BSFC = " + str(bsfc) + "g/kW-hr")
-print("ISFC = " + str(isfc) + "kg/kW-hr")
-print("Volumetric Efficiency = " + str(vole))
+output_dict = {
+    'Output Torque (Nm)': output_torque,
+    'Brake Power (W)': bp,
+    'Friction Power (W)': fp,
+    'BMEP (Pa)': bmep,
+    'IMEP (Pa)': imep,
+    'Brake Thermal Efficiency': bte,
+    'Indicated Thermal Efficiency': ite,
+    'Mechanical Efficiency': me,
+    'Fuel Flow (kg/hr)': fuel_flow,
+    'Air Flow (kg/hr)': air_flow,
+    'BSFC (kg/kW-hr)': bsfc,
+    'ISFC (kg/kW-hr)': isfc,
+    'Volumetric Efficiency': vole
+}
+
+output_dataframe = pd.DataFrame(output_dict)
+output_dataframe.to_csv("DataSheets/Outputs/output_kirloskar.csv")
