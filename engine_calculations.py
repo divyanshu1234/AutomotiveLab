@@ -53,7 +53,7 @@ vole = ech.calc_vole(air_flow, dia_cyl, stroke_length, rpm)
 
 bp_per_heat_input = bte
 el_per_heat_input = ech.calc_el_per_heat_input(v_water_cal, fuel_flow, cv_fuel, t3, t4, t5, t6)
-hl_per_heat_input = ech.calc_hl_per_heat_input(v_water_engine, fuel_flow, cv_fuel, t2, t1)
+hl_per_heat_input = ech.calc_hl_per_heat_input(v_water_engine, fuel_flow, cv_fuel, t1, t2)
 sum_bp_losses = bp_per_heat_input + el_per_heat_input + hl_per_heat_input
 
 

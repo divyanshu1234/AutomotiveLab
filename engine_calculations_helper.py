@@ -2,11 +2,11 @@ import math
 import numpy as np
 
 
-def calc_output_torque(load, dynamo_arm_length):  # Load = kg, arm_length = mm
+def calc_output_torque(load, dynamo_arm_length):  # load = kg, arm_length = mm
     return load * 9.81 * dynamo_arm_length / 1000.0  # Nm
 
 
-def calc_brake_power(output_torque, rpm):  # torque = Nm
+def calc_brake_power(output_torque, rpm):  # output_torque = Nm
     return output_torque * 2 * 3.1415 * rpm / 60  # W
 
 
@@ -60,9 +60,9 @@ def calc_vole(air_flow, dia_cyl, stroke_length, rpm):  # air_flow = kg/hr, dia_c
     return air_flow / (60 * 60) * 2 * 4 * math.pow(10, 9) * 60 / (1.17 * 3.1415 * math.pow(dia_cyl, 2) * stroke_length * rpm)  # not in percentage
 
 
-def calc_el_per_heat_input(v_water_cal, fuel_flow, cv_fuel, t3, t4, t5, t6):
-    return v_water_cal * 4.186 * (t4 - t3) * (t5 - 29) / (fuel_flow * cv_fuel * (t5 - t6))
+def calc_el_per_heat_input(v_water_cal, fuel_flow, cv_fuel, t3, t4, t5, t6):  # v_water_cal = LPH, fuel_flow = kg/hr, cv_fuel = kJ/kg, t3 = C, t4 = C, t5 = C, t6 = C
+    return v_water_cal * 4.186 * (t4 - t3) * (t5 - 29) / (fuel_flow * cv_fuel * (t5 - t6))  # not in percentage
 
 
-def calc_hl_per_heat_input(v_water_engine, fuel_flow, cv_fuel, t2, t1):
-    return v_water_engine * 4.186 * (t2 - t1) / (fuel_flow * cv_fuel)
+def calc_hl_per_heat_input(v_water_engine, fuel_flow, cv_fuel, t1, t2):  # v_water_engine = LPH, fuel_flow = kg/hr, t1 = C, t2 = C
+    return v_water_engine * 4.186 * (t2 - t1) / (fuel_flow * cv_fuel)  # not in percentage
