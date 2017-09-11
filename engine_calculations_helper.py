@@ -56,8 +56,8 @@ def calc_isfc(fuel_flow, ip):  # fuel_flow = kg/hr, ip = W
     return fuel_flow / (ip / 1000)  # kg/kW-hr
 
 
-def calc_vole(air_flow, dia_cyl, stroke_length, rpm):  # air_flow = kg/hr, dia_cyl = mm, stroke_length = mm
-    return air_flow / (60 * 60) * 2 * 4 * math.pow(10, 9) * 60 / (1.17 * 3.1415 * math.pow(dia_cyl, 2) * stroke_length * rpm)  # not in percentage
+def calc_vole(air_flow, dia_cyl, stroke_length, rpm, cylinders):  # air_flow = kg/hr, dia_cyl = mm, stroke_length = mm
+    return air_flow / (60 * 60) * 2 * 4 * math.pow(10, 9) * 60 / (1.17 * 3.1415 * math.pow(dia_cyl, 2) * stroke_length * rpm * cylinders)  # not in percentage
 
 
 def calc_el_per_heat_input(v_water_cal, fuel_flow, cv_fuel, t3, t4, t5, t6):  # v_water_cal = LPH, fuel_flow = kg/hr, cv_fuel = kJ/kg, t3 = C, t4 = C, t5 = C, t6 = C

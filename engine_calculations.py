@@ -49,7 +49,7 @@ fuel_flow = ech.calc_fuel_flow(v_fuel, den_fuel)
 air_flow = ech.calc_air_flow(h, dia_orifice)
 bsfc = ech.calc_bsfc(fuel_flow, bp)
 isfc = ech.calc_isfc(fuel_flow, ip)
-vole = ech.calc_vole(air_flow, dia_cyl, stroke_length, rpm)
+vole = ech.calc_vole(air_flow, dia_cyl, stroke_length, rpm, cylinders)
 
 bp_per_heat_input = bte
 el_per_heat_input = ech.calc_el_per_heat_input(v_water_cal, fuel_flow, cv_fuel, t3, t4, t5, t6)
