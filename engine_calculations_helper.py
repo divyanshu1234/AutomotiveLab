@@ -40,7 +40,7 @@ def calc_fuel_flow(v_fuel, den_fuel):  # v_fuel = L/min, d_fuel = kJ/kg
     return v_fuel * math.pow(10, -6) * 60 * den_fuel  # kg/hr
 
 
-def calc_air_flow(h, dia_orifice):  # h = mm, dia_orifice = mm TODO - fix this
+def calc_air_flow(h, dia_orifice):  # h = mm, dia_orifice = mm
     a = 1 - 9.81 * h / (1.013 * math.pow(10, 5))
     b = np.power(a, 2.0 / 7.0)
     c = 2 * 1000 * 302 * (1 - b)
