@@ -1,5 +1,6 @@
 import math
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def calc_output_torque(load, dynamo_arm_length):  # load = kg, arm_length = mm
@@ -66,3 +67,11 @@ def calc_el_per_heat_input(v_water_cal, fuel_flow, cv_fuel, t3, t4, t5, t6):  # 
 
 def calc_hl_per_heat_input(v_water_engine, fuel_flow, cv_fuel, t1, t2):  # v_water_engine = LPH, fuel_flow = kg/hr, t1 = C, t2 = C
     return v_water_engine * 4.186 * (t2 - t1) / (fuel_flow * cv_fuel)  # not in percentage
+
+
+def plot(x, xlabel, y, ylabel, figure_name):
+    plt.plot(x, y)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.savefig("DataSheets/Outputs/Figures/" + figure_name + ".png")
+    plt.clf()

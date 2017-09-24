@@ -6,6 +6,7 @@ import engine_calculations_helper as ech
 input_filename = askopenfilename()
 input_dataframe = pd.read_csv(input_filename)
 
+engine_name = input_filename[input_filename.rfind('/') + 1:]
 cylinders = input_dataframe['cylinders'][0]
 strokes = input_dataframe['strokes'][0]
 fuel = input_dataframe['fuel'][0]
@@ -84,3 +85,8 @@ output_filename = input_filename[0: input_filename.rfind('/')] \
                   + input_filename[input_filename.rfind('/') + 1:]
 
 output_dataframe.to_csv(output_filename)
+
+ech.plot(load, 'Load (kg)', bmep/100000, 'BMEP (bar)', engine_name + 'LoadVsBMEP')
+ech.plot(load, 'Load (kg)', hl_per_heat_input, 'Heat Loss as Percent of Heat Input (%)', engine_name + '_LoadVsHeatLoss')
+ech.plot(load, 'Load (kg)', vole / 100, 'Volumetric Efficiency (%)', '_LoadVsVolEff')
+ech.plot(load, 'Load (kg)', bsfc, 'BSFC (kg/kW-hr)', engine_name + '_LoadVsBSFC')
